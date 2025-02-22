@@ -58,7 +58,7 @@ export default async function AdminPage({ searchParams }: { searchParams?: { sea
               <td className="py-2 px-4 border-b text-center">{book.price}</td>
               <td className="py-2 px-4 border-b text-center">{book.stock}</td>
               <td className="py-2 px-4 border-b text-center">{book.publisher?.name}</td>
-              <td className="py-2 px-4 border-b space-x-2">
+              <td className="py-2 px-4 border-b space-x-2 text-center">
                 <Link href={`/admin/edit/${book.id}`} className="text-blue-500 hover:underline">
                   Edit
                 </Link>
