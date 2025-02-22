@@ -15,7 +15,7 @@ export default async function Home({ searchParams }: { searchParams?: { search?:
   });
 
   return (
-    <main className="p-6 bg-gray-50 min-h-screen">
+    <main className="p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">Home - Book List</h1>
       <form method="GET" className="mb-6">
         <input

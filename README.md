@@ -2,16 +2,34 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+1. First, install the dependencies:
+
+```bash
+npm install
+```
+
+2. Set up your database configuration in `.env` file:
+
+```env
+DATABASE_URL="postgresql://your_username:your_password@localhost:5432/your_database_name"
+```
+
+3. Run the database migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+4. Seed the database with initial data:
+
+```bash
+npm run seed
+```
+
+5. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

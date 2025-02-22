@@ -16,7 +16,7 @@ export default async function AdminPage({ searchParams }: { searchParams?: { sea
   });
 
   return (
-    <main className="p-6 bg-gray-50 min-h-screen">
+    <main className="p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">Admin - Manage Books</h1>
       <form method="GET" className="mb-8">
         <input

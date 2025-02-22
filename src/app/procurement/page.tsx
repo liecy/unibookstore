@@ -10,7 +10,7 @@ export default async function ProcurementPage() {
   });
 
   return (
-    <main className="p-6 bg-gray-50 min-h-screen">
+    <main className="p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">Procurement - Low Stock Books</h1>
       <table className="min-w-full bg-white border border-gray-200">
         <thead>

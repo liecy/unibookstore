@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 async function createBook(formData: FormData) {
   'use server';
@@ -19,6 +20,7 @@ async function createBook(formData: FormData) {
   });
 
   revalidatePath('/admin');
+  redirect('/admin');
 }
 
 export default async function AddBookPage() {
@@ -26,7 +28,7 @@ export default async function AddBookPage() {
   const publishers = await prisma.publisher.findMany({ orderBy: { id: 'asc' } });
 
   return (
-    <main className="p-6 bg-gray-50 min-h-screen">
+    <main className="p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">Add Book</h1>
       <form action={createBook} className="space-y-4 max-w-lg">
         <div>

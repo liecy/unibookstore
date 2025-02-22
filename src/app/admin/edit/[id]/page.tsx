@@ -39,7 +39,7 @@ export default async function EditBookPage({ params }: { params: { id: string } 
   const publishers = await prisma.publisher.findMany({ orderBy: { id: 'asc' } });
 
   return (
-    <main className="p-6 bg-gray-50 min-h-screen">
+    <main className="p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">Edit Book (ID: {bookId})</h1>
       <form action={updateBook} className="space-y-4 max-w-lg">
         <input type="hidden" name="id" value={bookId} />

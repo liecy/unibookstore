@@ -9,8 +9,8 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-gray-50 text-gray-900">
-        <header className="bg-white border-b border-gray-200 shadow-sm">
+      <body className="min-h-screen flex flex-col bg-gray-50 text-gray-900">
+        <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <div className="text-gray-900 font-bold text-xl">
               <Link href="/"> </Link>
@@ -23,16 +23,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </Link>
                 </li>
                 <li>
-                  <Link href="/admin" className="text-gray-800 hover:text-blue-600 transition-colors duration-200"
-                  >
+                  <Link href="/admin" className="text-gray-800 hover:text-blue-600 transition-colors duration-200">
                     Admin
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/procurement"
-                    className="text-gray-800 hover:text-blue-600 transition-colors duration-200"
-                  >
+                    className="text-gray-800 hover:text-blue-600 transition-colors duration-200">
                     Procurement
                   </Link>
                 </li>
@@ -41,9 +39,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto py-8 px-4">{children}</main>
+        <main className="flex-grow max-w-7xl mx-auto w-full py-8 px-4">
+          {children}
+        </main>
 
-        <footer className="bg-white border-t border-gray-200 py-4">
+        <footer className="bg-white border-t border-gray-200 py-4 mt-auto">
           <div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
             &copy; {new Date().getFullYear()} Unibookstore - by rahmi^^
           </div>
