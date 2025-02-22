@@ -4,43 +4,62 @@ import DeleteButton from './DeleteButton';
 
 const prisma = new PrismaClient();
 
-export default async function AdminPage() {
+export default async function AdminPage({ searchParams }: { searchParams?: { search?: string } }) {
+    
+  const search = searchParams?.search || '';
   const books = await prisma.book.findMany({
     include: { publisher: true },
-    orderBy: { id: 'asc' },
+    orderBy: { id: 'asc' }
   });
 
   return (
-    <main style={{ padding: '20px' }}>
-      <h1>ADMIN - Manage Books</h1>
-      <Link href="/admin/add">Add Book</Link>
-      <table border={1} cellPadding={5} style={{ marginTop: '20px' }}>
+    <main className="p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6">Admin - Manage Books</h1>
+      <form method="GET" className="mb-8">
+        <input
+          type="text"
+          name="search"
+          placeholder="Search book name..."
+          defaultValue={search}
+          className="border border-gray-300 rounded-md p-2 mr-2 w-64"
+        />
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+          Search
+        </button>
+      </form>
+      <div className="mb-4">
+        <Link href="/admin/add" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+          Add Book
+        </Link>
+      </div>
+      <table className="min-w-full bg-white border border-gray-200">
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Publisher</th>
-            <th>Actions</th>
+          <tr className="bg-gray-100">
+            <th className="py-2 px-4 border-b">ID</th>
+            <th className="py-2 px-4 border-b">Code</th>
+            <th className="py-2 px-4 border-b">Name</th>
+            <th className="py-2 px-4 border-b">Category</th>
+            <th className="py-2 px-4 border-b">Price</th>
+            <th className="py-2 px-4 border-b">Stock</th>
+            <th className="py-2 px-4 border-b">Publisher</th>
+            <th className="py-2 px-4 border-b">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {books.map((b) => (
-            <tr key={b.id}>
-              <td>{b.id}</td>
-              <td>{b.code}</td>
-              <td>{b.name}</td>
-              <td>{b.category}</td>
-              <td>{b.price}</td>
-              <td>{b.stock}</td>
-              <td>{b.publisher?.name}</td>
-              <td>
-                <Link href={`/admin/edit/${b.id}`}>Edit</Link>
-                {' | '}
-                <DeleteButton id={b.id} />
+          {books.map((book) => (
+            <tr key={book.id} className="hover:bg-gray-50">
+              <td className="py-2 px-4 border-b text-center">{book.id}</td>
+              <td className="py-2 px-4 border-b text-center">{book.code}</td>
+              <td className="py-2 px-4 border-b">{book.name}</td>
+              <td className="py-2 px-4 border-b text-center">{book.category}</td>
+              <td className="py-2 px-4 border-b text-center">{book.price}</td>
+              <td className="py-2 px-4 border-b text-center">{book.stock}</td>
+              <td className="py-2 px-4 border-b text-center">{book.publisher?.name}</td>
+              <td className="py-2 px-4 border-b space-x-2">
+                <Link href={`/admin/edit/${book.id}`} className="text-blue-500 hover:underline">
+                  Edit
+                </Link>
+                <DeleteButton id={book.id} />
               </td>
             </tr>
           ))}

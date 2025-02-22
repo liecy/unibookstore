@@ -15,53 +15,43 @@ async function createBook(formData: FormData) {
   const publisherId = parseInt(formData.get('publisherId') as string);
 
   await prisma.book.create({
-    data: {
-      code,
-      category,
-      name,
-      price,
-      stock,
-      publisherId,
-    },
+    data: { code, category, name, price, stock, publisherId }
   });
 
-  
   revalidatePath('/admin');
 }
 
 export default async function AddBookPage() {
   const prisma = new PrismaClient();
-  const publishers = await prisma.publisher.findMany({
-    orderBy: { id: 'asc' },
-  });
+  const publishers = await prisma.publisher.findMany({ orderBy: { id: 'asc' } });
 
   return (
-    <main style={{ padding: '20px' }}>
-      <h1>Add Book</h1>
-      <form action={createBook}>
+    <main className="p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6">Add Book</h1>
+      <form action={createBook} className="space-y-4 max-w-lg">
         <div>
-          <label>Code: </label>
-          <input name="code" type="text" required />
+          <label className="block mb-1">Code:</label>
+          <input name="code" type="text" required className="w-full border border-gray-300 p-2 rounded-md" />
         </div>
         <div>
-          <label>Category: </label>
-          <input name="category" type="text" />
+          <label className="block mb-1">Category:</label>
+          <input name="category" type="text" className="w-full border border-gray-300 p-2 rounded-md" />
         </div>
         <div>
-          <label>Name: </label>
-          <input name="name" type="text" required />
+          <label className="block mb-1">Name:</label>
+          <input name="name" type="text" required className="w-full border border-gray-300 p-2 rounded-md" />
         </div>
         <div>
-          <label>Price: </label>
-          <input name="price" type="number" step="any" />
+          <label className="block mb-1">Price:</label>
+          <input name="price" type="number" step="any" className="w-full border border-gray-300 p-2 rounded-md" />
         </div>
         <div>
-          <label>Stock: </label>
-          <input name="stock" type="number" />
+          <label className="block mb-1">Stock:</label>
+          <input name="stock" type="number" className="w-full border border-gray-300 p-2 rounded-md" />
         </div>
         <div>
-          <label>Publisher: </label>
-          <select name="publisherId" required>
+          <label className="block mb-1">Publisher:</label>
+          <select name="publisherId" required className="w-full border border-gray-300 p-2 rounded-md">
             <option value="">--Select Publisher--</option>
             {publishers.map((pub) => (
               <option key={pub.id} value={pub.id}>
@@ -70,7 +60,9 @@ export default async function AddBookPage() {
             ))}
           </select>
         </div>
-        <button type="submit">Create</button>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+          Create
+        </button>
       </form>
     </main>
   );
