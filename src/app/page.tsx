@@ -4,7 +4,7 @@ import Link from 'next/link';
 const prisma = new PrismaClient();
 
 export default async function Home({ searchParams }: { searchParams?: { search?: string } }) {
-  const search = searchParams?.search || '';
+  const { search = '' } = await searchParams || {};
 
   const books = await prisma.book.findMany({
     where: {

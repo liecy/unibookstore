@@ -5,9 +5,12 @@ import DeleteButton from './DeleteButton';
 const prisma = new PrismaClient();
 
 export default async function AdminPage({ searchParams }: { searchParams?: { search?: string } }) {
-    
-  const search = searchParams?.search || '';
+  const { search = '' } = await searchParams || {};
+  
   const books = await prisma.book.findMany({
+    where: search ? {
+      name: { contains: search, mode: 'insensitive' }
+    } : undefined,
     include: { publisher: true },
     orderBy: { id: 'asc' }
   });
