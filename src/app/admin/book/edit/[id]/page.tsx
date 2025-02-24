@@ -22,7 +22,7 @@ async function updateBook(formData: FormData) {
   });
 
   revalidatePath('/admin');
-  redirect('/admin');
+  redirect('/admin?section=books');
 }
 
 export default async function EditBookPage({ params }: { params: { id: string } }) {

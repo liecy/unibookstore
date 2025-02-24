@@ -21,7 +21,7 @@ async function updatePublisher(formData: FormData) {
   });
 
   revalidatePath('/publisher');
-  redirect('/publisher');
+  redirect('/admin?section=publishers');
 }
 
 export default async function EditPublisherPage({ params }: { params: { id: string } }) {

@@ -34,13 +34,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     Procurement
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/publisher"
-                    className="text-gray-800 hover:text-blue-600 transition-colors duration-200">
-                    Publisher
-                  </Link>
-                </li>
               </ul>
             </nav>
           </div>
