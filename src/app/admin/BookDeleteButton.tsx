@@ -4,7 +4,7 @@ import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteBook } from './actions'; 
 
-export default function DeleteButton({ id }: { id: number }) {
+export default function BookDeleteButton({ id }: { id: number }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

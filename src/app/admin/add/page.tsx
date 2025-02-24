@@ -20,7 +20,7 @@ async function createBook(formData: FormData) {
   });
 
   revalidatePath('/admin');
-  redirect('/admin');
+  redirect('/admin?section=books');
 }
 
 export default async function AddBookPage() {

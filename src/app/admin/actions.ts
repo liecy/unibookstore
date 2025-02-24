@@ -9,3 +9,9 @@ export async function deleteBook(id: number) {
     where: { id },
   });
 }
+
+export async function deletePublisher(id: number) {
+  await prisma.publisher.delete({
+    where: { id },
+  });
+}
