@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/app/lib/prisma';
 import Link from 'next/link';
 import BookDeleteButton from './BookDeleteButton';
 import PublisherDeleteButton from './PublisherDeleteButton';
 
-const prisma = new PrismaClient();
 
 export default async function AdminPage({ searchParams }: { searchParams?: { section?: string; search?: string } }) {
   const resolvedSearchParams = await Promise.resolve(searchParams);

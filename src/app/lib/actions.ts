@@ -1,24 +1,9 @@
-// app/lib/actions.ts
 'use server';
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
-export async function deleteBook(id: number) {
-  await prisma.book.delete({
-    where: { id },
-  });
-}
-
-export async function deletePublisher(id: number) {
-  await prisma.publisher.delete({
-    where: { id },
-  });
-}
+import { prisma } from '@/app/lib/prisma';
 
 const bookSchema = z.object({
   id: z.coerce.number().optional(),
@@ -30,7 +15,6 @@ const bookSchema = z.object({
   publisherId: z.coerce.number().positive()
 });
 
-// Publisher validation schema for server-side
 const publisherSchema = z.object({
   id: z.coerce.number().optional(),
   code: z.string().min(1).regex(/^[a-zA-Z0-9-]+$/),
@@ -40,12 +24,31 @@ const publisherSchema = z.object({
   phone: z.string().min(1).regex(/^[0-9+\-\s()]{7,20}$/)
 });
 
-export async function createBook(formData: FormData) {
-  const { PrismaClient } = await import('@prisma/client');
-  const prisma = new PrismaClient();
+export async function deleteBook(id: number) {
+  await prisma.book.delete({
+    where: { id },
+  });
+  
+  revalidatePath('/admin');
+}
 
+export async function deletePublisher(id: number) {
   try {
-    // Parse and validate the input data
+    await prisma.publisher.delete({
+      where: { id },
+    });
+    
+    revalidatePath('/admin');
+  } catch (error: any) {
+    if (error.code === 'P2003') {
+      throw new Error('Cannot delete publisher because it still has books. Delete the books first or reassign them to another publisher.');
+    }
+    throw error;
+  }
+}
+
+export async function createBook(formData: FormData) {
+  try {
     const validatedData = bookSchema.parse({
       code: formData.get('code'),
       category: formData.get('category'),
@@ -55,7 +58,6 @@ export async function createBook(formData: FormData) {
       publisherId: formData.get('publisherId')
     });
 
-    // Create book record
     await prisma.book.create({
       data: validatedData
     });
@@ -63,23 +65,15 @@ export async function createBook(formData: FormData) {
     revalidatePath('/admin');
     redirect('/admin?section=books');
   } catch (error: any) {
-    // Handle Prisma errors
     if (error.code === 'P2002') {
       throw new Error('A book with this code already exists');
     }
-    // Re-throw Zod or other errors
     throw error;
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 export async function updateBook(formData: FormData) {
-  const { PrismaClient } = await import('@prisma/client');
-  const prisma = new PrismaClient();
-
   try {
-    // Parse and validate the input data
     const validatedData = bookSchema.parse({
       id: formData.get('id'),
       code: formData.get('code'),
@@ -96,7 +90,6 @@ export async function updateBook(formData: FormData) {
       throw new Error('Book ID is required');
     }
 
-    // Update book record
     await prisma.book.update({
       where: { id },
       data
@@ -105,23 +98,15 @@ export async function updateBook(formData: FormData) {
     revalidatePath('/admin');
     redirect('/admin?section=books');
   } catch (error: any) {
-    // Handle Prisma errors
     if (error.code === 'P2002') {
       throw new Error('A book with this code already exists');
     }
-    // Re-throw Zod or other errors
     throw error;
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 export async function createPublisher(formData: FormData) {
-  const { PrismaClient } = await import('@prisma/client');
-  const prisma = new PrismaClient();
-
   try {
-    // Parse and validate the input data
     const validatedData = publisherSchema.parse({
       code: formData.get('code'),
       name: formData.get('name'),
@@ -130,7 +115,6 @@ export async function createPublisher(formData: FormData) {
       phone: formData.get('phone')
     });
 
-    // Create publisher record
     await prisma.publisher.create({
       data: validatedData
     });
@@ -138,23 +122,15 @@ export async function createPublisher(formData: FormData) {
     revalidatePath('/admin');
     redirect('/admin?section=publishers');
   } catch (error: any) {
-    // Handle Prisma errors
     if (error.code === 'P2002') {
       throw new Error('A publisher with this code already exists');
     }
-    // Re-throw Zod or other errors
     throw error;
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 export async function updatePublisher(formData: FormData) {
-  const { PrismaClient } = await import('@prisma/client');
-  const prisma = new PrismaClient();
-
   try {
-    // Parse and validate the input data
     const validatedData = publisherSchema.parse({
       id: formData.get('id'),
       code: formData.get('code'),
@@ -170,7 +146,6 @@ export async function updatePublisher(formData: FormData) {
       throw new Error('Publisher ID is required');
     }
 
-    // Update publisher record
     await prisma.publisher.update({
       where: { id },
       data
@@ -179,13 +154,9 @@ export async function updatePublisher(formData: FormData) {
     revalidatePath('/admin');
     redirect('/admin?section=publishers');
   } catch (error: any) {
-    // Handle Prisma errors
     if (error.code === 'P2002') {
       throw new Error('A publisher with this code already exists');
     }
-    // Re-throw Zod or other errors
     throw error;
-  } finally {
-    await prisma.$disconnect();
   }
 }

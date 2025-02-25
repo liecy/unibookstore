@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/app/lib/prisma';
 
 export default async function ProcurementPage() {
   const books = await prisma.book.findMany({
