@@ -6,7 +6,6 @@ import PublisherDeleteButton from './PublisherDeleteButton';
 const prisma = new PrismaClient();
 
 export default async function AdminPage({ searchParams }: { searchParams?: { section?: string; search?: string } }) {
-  // Await searchParams (forcing resolution)
   const resolvedSearchParams = await Promise.resolve(searchParams);
   const section = resolvedSearchParams?.section || 'books';
   const search = resolvedSearchParams?.search || '';
@@ -75,7 +74,7 @@ async function BooksSection({ search }: { search: string }) {
           </button>
         </form>
         <Link
-          href="/admin/add"
+          href="/admin/book/add"
           className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
         >
           Add Book
@@ -84,7 +83,6 @@ async function BooksSection({ search }: { search: string }) {
       <table className="min-w-full bg-white border border-gray-200 mx-auto">
         <thead>
           <tr className="bg-gray-100">
-            <th className="py-2 px-4 border-b text-center">ID</th>
             <th className="py-2 px-4 border-b text-center">Code</th>
             <th className="py-2 px-4 border-b text-center">Name</th>
             <th className="py-2 px-4 border-b text-center">Category</th>
@@ -97,7 +95,6 @@ async function BooksSection({ search }: { search: string }) {
         <tbody>
           {books.map((book) => (
             <tr key={book.id} className="hover:bg-gray-50">
-              <td className="py-2 px-4 border-b text-center">{book.id}</td>
               <td className="py-2 px-4 border-b text-center">{book.code}</td>
               <td className="py-2 px-4 border-b">{book.name}</td>
               <td className="py-2 px-4 border-b text-center">{book.category}</td>
@@ -105,7 +102,7 @@ async function BooksSection({ search }: { search: string }) {
               <td className="py-2 px-4 border-b text-center">{book.stock}</td>
               <td className="py-2 px-4 border-b text-center">{book.publisher?.name}</td>
               <td className="py-2 px-4 border-b text-center space-x-2">
-                <Link href={`/admin/edit/${book.id}`} className="text-blue-500 hover:underline">
+                <Link href={`/admin/book/edit/${book.id}`} className="text-blue-500 hover:underline">
                   Edit
                 </Link>
                 <BookDeleteButton id={book.id} />
@@ -152,7 +149,7 @@ async function PublishersSection({ search }: { search: string }) {
           </button>
         </form>
         <Link
-          href="/publisher/add"
+          href="admin/publisher/add"
           className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
         >
           Add Publisher
@@ -161,7 +158,6 @@ async function PublishersSection({ search }: { search: string }) {
       <table className="min-w-full bg-white border border-gray-200 mx-auto">
         <thead>
           <tr className="bg-gray-100">
-            <th className="py-2 px-4 border-b text-center">ID</th>
             <th className="py-2 px-4 border-b text-center">Code</th>
             <th className="py-2 px-4 border-b text-center">Name</th>
             <th className="py-2 px-4 border-b text-center">Address</th>
@@ -173,14 +169,13 @@ async function PublishersSection({ search }: { search: string }) {
         <tbody>
           {publishers.map((pub) => (
             <tr key={pub.id} className="hover:bg-gray-50">
-              <td className="py-2 px-4 border-b text-center">{pub.id}</td>
               <td className="py-2 px-4 border-b text-center">{pub.code}</td>
               <td className="py-2 px-4 border-b text-center">{pub.name}</td>
               <td className="py-2 px-4 border-b text-center">{pub.address}</td>
               <td className="py-2 px-4 border-b text-center">{pub.city}</td>
               <td className="py-2 px-4 border-b text-center">{pub.phone}</td>
               <td className="py-2 px-4 border-b text-center space-x-2">
-                <Link href={`/publisher/edit/${pub.id}`} className="text-blue-500 hover:underline">
+                <Link href={`/admin/publisher/edit/${pub.id}`} className="text-blue-500 hover:underline">
                   Edit
                 </Link>
                 <PublisherDeleteButton id={pub.id} />
